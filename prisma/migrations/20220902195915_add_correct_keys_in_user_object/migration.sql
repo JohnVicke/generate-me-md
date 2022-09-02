@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `User` ADD COLUMN `githubUsername` VARCHAR(191) NULL,
+    ADD COLUMN `htmlUrl` VARCHAR(191) NULL,
+    ADD COLUMN `reposUrl` VARCHAR(191) NULL;

@@ -19,21 +19,35 @@ model Example {
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? @db.VarChar(500)
-    access_token      String? @db.VarChar(500)
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id                       String  @id @default(cuid())
+    userId                   String
+    type                     String
+    provider                 String
+    providerAccountId        String
+    refresh_token            String? @db.VarChar(500)
+    refresh_token_expires_in Int?
+    access_token             String? @db.VarChar(500)
+    expires_at               Int?
+    token_type               String?
+    scope                    String?
+    id_token                 String? @db.Text
+    session_state            String?
+    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+}
+
+model GithubProfile {
+    id        String   @id @default(cuid())
+    userId    String   @unique
+    login     String
+    githubId  Int
+    url       String
+    htmlUrl   String
+    reposUrl  String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Session {
@@ -45,13 +59,17 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
+    id             String         @id @default(cuid())
+    name           String?
+    email          String?        @unique
+    reposUrl       String?
+    htmlUrl        String?
+    githubUsername String?
+    emailVerified  DateTime?
+    image          String?
+    accounts       Account[]
+    sessions       Session[]
+    GithubProfile  GithubProfile?
 }
 
 model VerificationToken {

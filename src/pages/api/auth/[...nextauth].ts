@@ -1,10 +1,9 @@
 import NextAuth, { Session, type NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import GithubProvider from "next-auth/providers/github";
 
-// Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "../../../server/db/client";
 import { env } from "../../../env/server.mjs";
+import { prisma } from "../../../server/db/client";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -13,21 +12,20 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async signIn() {
+    async signIn({}) {
       return true;
     },
-    async redirect({ url, baseUrl }) {
-      return url.startsWith(baseUrl) ? url : baseUrl;
-    },
-    async jwt({ token, user }) {
+    async jwt({ token, user, profile }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
       }
-
+      if (profile) {
+        token.githubId = profile.id;
+      }
       return token;
     },
-    async session({ session, token }) {
+    session({ session, token }) {
       const sess: Session = {
         ...session,
         user: {
@@ -40,35 +38,20 @@ export const authOptions: NextAuthOptions = {
     },
   },
   providers: [
-    CredentialsProvider({
-      name: "Username and password",
-      credentials: {
-        email: {
-          label: "Email",
-          type: "text",
-          placeholder: "jsmith@email.com",
-        },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        if (env.NODE_ENV === "production") return null;
-        if (!credentials) return null;
+    GithubProvider({
+      clientId: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
 
-        const { email } = credentials;
-
-        const user = await prisma.user.findUnique({
-          where: { email },
-          select: {
-            id: true,
-            email: true,
-            name: true,
-            sessions: true,
-          },
-        });
-
-        if (!user) throw new Error("A user with that email does not exist");
-
-        return user;
+      async profile(profile) {
+        return {
+          id: profile.id.toString(),
+          name: profile.name ?? profile.login,
+          email: profile.email,
+          image: profile.avatar_url,
+          githubUsername: profile.login,
+          reposUrl: profile.repos_url,
+          htmlUrl: profile.html_url,
+        };
       },
     }),
   ],
