@@ -15,7 +15,7 @@ const Documents = () => {
   return (
     <>
       <div>Documents</div>
-      <Link href="/documents/new">Create new document</Link>
+      <Link href="/documents/repo">Create new document</Link>
     </>
   );
 };

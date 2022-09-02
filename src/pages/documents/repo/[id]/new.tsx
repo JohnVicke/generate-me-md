@@ -3,11 +3,11 @@ import { useSession } from "next-auth/react";
 import React, { Suspense } from "react";
 import { CgArrowLeftO, CgCloseO, CgDribbble } from "react-icons/cg";
 import { GoGitPullRequest } from "react-icons/go";
-import { MDBody } from "../../components/markdown/MDBody";
-import { MDCodeBlock } from "../../components/markdown/MDCodeBlock";
-import { MDDivider } from "../../components/markdown/MDDivider";
-import { MDHeading } from "../../components/markdown/MDHeading";
-import { GithubIssues } from "../../components/shield/GithubIssues";
+import { MDBody } from "../../../../components/markdown/MDBody";
+import { MDCodeBlock } from "../../../../components/markdown/MDCodeBlock";
+import { MDDivider } from "../../../../components/markdown/MDDivider";
+import { MDHeading } from "../../../../components/markdown/MDHeading";
+import { GithubIssues } from "../../../../components/shield/GithubIssues";
 
 const showDrawerAnim: AnimationProps = {
   variants: {
@@ -137,6 +137,7 @@ const Create = () => {
   if (session.status === "unauthenticated") {
     return <div>Not authenticated</div>;
   }
+
   return (
     <div className="relative">
       <div className="sticky top-2 left-[50%] z-40 w-fit translate-x-[-50%]">
