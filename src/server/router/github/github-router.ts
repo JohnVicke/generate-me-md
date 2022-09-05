@@ -7,16 +7,14 @@ const BASE_URL = "https://api.github.com";
 export const githubRouter = createProtectedRouter()
   .query("getRepos", {
     async resolve({ ctx }) {
-      const account = await ctx.prisma.account.findFirst({ where: { userId: ctx.session.user.id } });
-      if (account?.access_token) {
+      if (ctx.session.accessToken) {
         const res = await fetch(`${BASE_URL}/user/repos?type=owner&sort=created`, {
           headers: {
             Accept: "application/vnd.github+json",
-            Authorization: `Bearer ${account.access_token}`,
+            Authorization: `Bearer ${ctx.session.accessToken}`,
           },
         });
         const repos = await res.json();
-
         const parsedRepos = repos.map((repo: GithubRepo) => {
           return {
             name: repo.name,
