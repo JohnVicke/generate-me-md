@@ -2,60 +2,41 @@ import NextAuth, { type NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { env } from "../../../env/server.mjs";
-import { prisma } from "../../../server/db/client";
-import { refreshGithubToken } from "@/utils/refresh-github-token";
+import { env } from "@/env/server.mjs";
+import { prisma } from "@/server/db/client";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
-  secret: env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
   },
+  secret: env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({}) {
       return true;
     },
-    async jwt({ token, user, account }) {
-      if (user && account) {
-        return {
-          userId: user.id,
-          accessToken: account.access_token,
-          accessTokenExpiresIn: account.expires_at,
-          refreshToken: account.refresh_token,
-        };
+    async jwt({ token, account }) {
+      if (account?.access_token) {
+        token.accessToken = account.access_token;
       }
 
-      if (Math.floor(new Date().getTime() / 1000) < token?.accessTokenExpiresIn) {
-        return token;
-      }
-
-      return refreshGithubToken(token);
+      return token;
     },
 
     session({ session, token }) {
-      return {
-        ...session,
-        userId: token.userId,
-        accessToken: token.accessToken,
-        accessTokenExpiresIn: token.accessTokenExpiresIn,
-      };
+      if (token?.accessToken) session.accessToken = token.accessToken;
+      console.log(session);
+      return session;
     },
   },
   providers: [
     GithubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
-      async profile(profile) {
-        return {
-          id: profile.id.toString(),
-          name: profile.name ?? profile.login,
-          email: profile.email,
-          image: profile.avatar_url,
-          githubUsername: profile.login,
-          reposUrl: profile.repos_url,
-          htmlUrl: profile.html_url,
-        };
+      authorization: {
+        params: {
+          scope: "repo read:user user:email",
+        },
       },
     }),
   ],

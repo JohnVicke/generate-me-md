@@ -143,9 +143,6 @@ const Editor = () => {
 
   return (
     <div className="relative">
-      <div className="sticky top-2 left-[50%] z-40 w-fit translate-x-[-50%]">
-        <DocumentControls />
-      </div>
       <div className="flex gap-2">
         <PreviewWindow />
       </div>

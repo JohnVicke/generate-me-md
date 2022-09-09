@@ -1,7 +1,6 @@
-import React from "react";
-import { trpc, inferQueryOutput } from "../../../utils/trpc";
-import { GoMarkGithub, GoGitPullRequest } from "react-icons/go";
+import { GoMarkGithub } from "react-icons/go";
 import { v4 } from "uuid";
+import { inferQueryOutput, trpc } from "../../../utils/trpc";
 
 type GithubRepo = inferQueryOutput<"github.getRepos">[0];
 

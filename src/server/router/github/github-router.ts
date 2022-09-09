@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { createProtectedRouter } from "../protected-router";
 import { GithubRepo } from "./schemas/github-repo-schema";
 
@@ -7,25 +8,25 @@ const BASE_URL = "https://api.github.com";
 export const githubRouter = createProtectedRouter()
   .query("getRepos", {
     async resolve({ ctx }) {
-      if (ctx.session.accessToken) {
-        const res = await fetch(`${BASE_URL}/user/repos?type=owner&sort=created`, {
-          headers: {
-            Accept: "application/vnd.github+json",
-            Authorization: `Bearer ${ctx.session.accessToken}`,
-          },
-        });
-        const repos = await res.json();
-        const parsedRepos = repos.map((repo: GithubRepo) => {
-          return {
-            name: repo.name,
-            id: repo.id,
-            nodeId: repo.node_id,
-          };
-        }) as { name: string; id: string; nodeId: string }[];
-
-        return parsedRepos;
+      if (!ctx.session.accessToken) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
-      return [];
+      const res = await fetch(`${BASE_URL}/user/repos?type=owner&sort=created`, {
+        headers: {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${ctx.session.accessToken}`,
+        },
+      });
+      const repos = await res.json();
+      const parsedRepos = repos.map((repo: GithubRepo) => {
+        return {
+          name: repo.name,
+          id: repo.id,
+          nodeId: repo.node_id,
+        };
+      }) as { name: string; id: string; nodeId: string }[];
+
+      return parsedRepos;
     },
   })
   .query("getSecretMessage", {

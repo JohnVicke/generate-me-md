@@ -20,6 +20,7 @@ export const refreshGithubToken = async (token: JWT) => {
     if (!res.ok) throw res;
 
     const json = await res.json();
+    console.log(json);
 
     return {
       ...token,
