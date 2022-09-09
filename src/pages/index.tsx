@@ -18,7 +18,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
+      <main className="container mx-auto flex flex-col items-center justify-center p-4 pt-36">
         <h1 className="text-5xl font-extrabold leading-normal text-gray-700 md:text-[5rem]">
           Generate<span className="text-purple-300">ME</span>.md
         </h1>
@@ -28,8 +28,8 @@ const Home: NextPage = () => {
           </button>
         )}
         {status === "unauthenticated" && (
-          <button onClick={() => signOut()} className="btn btn-primary">
-            Sign out
+          <button onClick={() => signIn()} className="btn btn-primary">
+            Sign in
           </button>
         )}
       </main>

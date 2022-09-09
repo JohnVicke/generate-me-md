@@ -12,10 +12,15 @@ const Documents = () => {
   if (session.status === "unauthenticated") {
     return <div>Not authenticated</div>;
   }
+
   return (
     <>
-      <div>Documents</div>
-      <Link href="/documents/new">Create new document</Link>
+      <div>My Documents</div>
+      <div className="flex flex-wrap gap-4">
+        <Link href="/documents/editor" passHref>
+          <button className="btn h-52 w-36">Create new README </button>
+        </Link>
+      </div>
     </>
   );
 };

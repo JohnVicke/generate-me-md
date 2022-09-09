@@ -3,11 +3,11 @@ import { useSession } from "next-auth/react";
 import React, { Suspense } from "react";
 import { CgArrowLeftO, CgCloseO, CgDribbble } from "react-icons/cg";
 import { GoGitPullRequest } from "react-icons/go";
-import { MDBody } from "../../components/markdown/MDBody";
-import { MDCodeBlock } from "../../components/markdown/MDCodeBlock";
-import { MDDivider } from "../../components/markdown/MDDivider";
-import { MDHeading } from "../../components/markdown/MDHeading";
-import { GithubIssues } from "../../components/shield/GithubIssues";
+import { MDBody } from "@/components/markdown/MDBody";
+import { MDCodeBlock } from "@/components/markdown/MDCodeBlock";
+import { MDDivider } from "@/components/markdown/MDDivider";
+import { MDHeading } from "@/components/markdown/MDHeading";
+import { GithubIssues } from "@/components/markdown/shields/GithubIssues";
 
 const showDrawerAnim: AnimationProps = {
   variants: {
@@ -84,16 +84,19 @@ const ComponetDrawer = () => {
   );
 };
 
-const ExportDocument = () => {
-  return <div className="sticky top-10">export document</div>;
-};
-
 const PreviewWindow = () => {
-  const session = useSession();
   return (
     <div className="mx-auto mt-12 flex w-full max-w-screen-md flex-col gap-3 bg-base-300 p-8">
-      <h1 className="text-center text-3xl font-bold">Generate ME</h1>
-      <h3 className="text-center text-base font-bold">Super cool github project!</h3>
+      <input
+        type="text"
+        placeholder="Generate ME"
+        className="bg-transparent text-center text-3xl font-bold focus:outline-none"
+      />
+      <input
+        type="text"
+        placeholder="Super cool github project"
+        className="bg-transparent text-center text-base font-bold focus:outline-none"
+      />
       <div className="align-center flex justify-center gap-2">
         <GithubIssues username="JohnVicke" repo="klask-backend" />
         <GithubIssues username="JohnVicke" repo="klask-backend" />
@@ -127,7 +130,7 @@ const DocumentControls = () => {
   );
 };
 
-const Create = () => {
+const Editor = () => {
   const session = useSession();
 
   if (session.status === "loading") {
@@ -137,14 +140,14 @@ const Create = () => {
   if (session.status === "unauthenticated") {
     return <div>Not authenticated</div>;
   }
+
   return (
     <div className="relative">
-      <div className="sticky top-2 left-[50%] z-40 w-fit translate-x-[-50%]">
-        <DocumentControls />
+      <div className="flex gap-2">
+        <PreviewWindow />
       </div>
-      <PreviewWindow />
     </div>
   );
 };
 
-export default Create;
+export default Editor;
