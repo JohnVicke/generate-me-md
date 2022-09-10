@@ -1,13 +1,13 @@
 import { AnimatePresence, AnimationProps, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
+import { RiCloseCircleFill, RiEdit2Fill } from "react-icons/ri";
 import React, { Suspense } from "react";
 import { CgArrowLeftO, CgCloseO, CgDribbble } from "react-icons/cg";
 import { GoGitPullRequest } from "react-icons/go";
-import { MDBody } from "@/components/markdown/MDBody";
-import { MDCodeBlock } from "@/components/markdown/MDCodeBlock";
-import { MDDivider } from "@/components/markdown/MDDivider";
-import { MDHeading } from "@/components/markdown/MDHeading";
-import { GithubIssues } from "@/components/markdown/shields/GithubIssues";
+import { GithubIssues } from "@/components/markdown/block/shields/GithubIssues";
+import { Header } from "@/components/markdown/Header";
+import { SubHeader } from "@/components/markdown/SubHeader";
+import { LinksController } from "@/components/markdown/block/Links";
 
 const showDrawerAnim: AnimationProps = {
   variants: {
@@ -87,45 +87,13 @@ const ComponetDrawer = () => {
 const PreviewWindow = () => {
   return (
     <div className="mx-auto mt-12 flex w-full max-w-screen-md flex-col gap-3 bg-base-300 p-8">
-      <input
-        type="text"
-        placeholder="Generate ME"
-        className="bg-transparent text-center text-3xl font-bold focus:outline-none"
-      />
-      <input
-        type="text"
-        placeholder="Super cool github project"
-        className="bg-transparent text-center text-base font-bold focus:outline-none"
-      />
+      <Header />
+      <SubHeader />
       <div className="align-center flex justify-center gap-2">
         <GithubIssues username="JohnVicke" repo="klask-backend" />
         <GithubIssues username="JohnVicke" repo="klask-backend" />
       </div>
-      <div className="align-center flex justify-center gap-2">
-        <a className="font-bold text-blue-400" href="">
-          Contribute
-        </a>
-        <span>·</span>
-        <a className="font-bold text-blue-400" href="">
-          Community
-        </a>
-        <span>·</span>
-        <a className="font-bold text-blue-400" href="">
-          Documentation
-        </a>
-      </div>
-    </div>
-  );
-};
-
-const DocumentControls = () => {
-  return (
-    <div className="flex gap-2">
-      <button className="btn btn-accent">Templates</button>
-      <button className="btn btn-primary">
-        <GoGitPullRequest className="mr-2 text-xl" />
-        New pull request
-      </button>
+      <LinksController />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { CgCopy } from "react-icons/cg";
-import { FadeIn } from "../FadeIn";
+import { FadeIn } from "../../FadeIn";
 
 export const MDCodeBlock = ({ children }: React.PropsWithChildren) => {
   const [hover, setHover] = React.useState(false);
