@@ -80,7 +80,7 @@ export const LinksController = ({}) => {
 
   return (
     <>
-      <div onClick={() => setModalOpen(true)} className="cursor-pointer hover:border hover:border-white">
+      <div>
         <Links />
       </div>
       <DefaultModal open={modalOpen} close={closeModal}>
