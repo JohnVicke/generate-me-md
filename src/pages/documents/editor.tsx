@@ -39,7 +39,7 @@ const EditorPage = () => {
         </motion.div>
         <motion.div layout>
           <p>Preview</p>
-          <Preview components={components} />
+          <Preview />
         </motion.div>
       </div>
     </LayoutGroup>
