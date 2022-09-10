@@ -21,6 +21,7 @@
     "@trpc/react": "^9.27.2",
     "@trpc/server": "^9.27.2",
     "daisyui": "^2.24.0",
+    "formik": "^2.2.9",
     "framer-motion": "^7.2.1",
     "next": "12.2.5",
     "next-auth": "^4.10.3",

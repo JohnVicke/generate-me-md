@@ -86,7 +86,7 @@ const ComponetDrawer = () => {
 
 const PreviewWindow = () => {
   return (
-    <div className="mx-auto mt-12 flex w-full max-w-screen-md flex-col gap-3 bg-base-300 p-8">
+    <div className="mx-auto mt-12 flex w-full flex-col gap-3 bg-base-300 p-8">
       <Header />
       <SubHeader />
       <div className="align-center flex justify-center gap-2">
@@ -110,8 +110,10 @@ const Editor = () => {
   }
 
   return (
-    <div className="relative">
-      <div className="flex gap-2">
+    <div className="grid grid-cols-[200px_1fr_1fr] px-4">
+      <div>secionmenu</div>
+      <div>editor</div>
+      <div className="relative">
         <PreviewWindow />
       </div>
     </div>
