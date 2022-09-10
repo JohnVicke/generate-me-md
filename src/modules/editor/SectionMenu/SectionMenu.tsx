@@ -38,6 +38,7 @@ type SectionMenuProps = {
 
 export const SectionMenu = ({ hideMenu }: SectionMenuProps) => {
   const { selectedComponents, reOrderComponents, selectComponent } = useComponentStore();
+
   return (
     <motion.div key="section-menu" {...animation} className="h-full w-80 overflow-y-auto bg-base-200 px-2">
       <div className="flex flex-col gap-4">

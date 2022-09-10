@@ -1,3 +1,4 @@
+import { useComponentStore } from "@/modules/editor/componentStore";
 import { Editor } from "@/modules/editor/Editor";
 import { Preview } from "@/modules/editor/Preview";
 import { SectionMenu } from "@/modules/editor/SectionMenu/SectionMenu";
@@ -6,6 +7,7 @@ import { useSession } from "next-auth/react";
 import React from "react";
 
 const EditorPage = () => {
+  const [previewViewAll, setPreviewViewAll] = React.useState(false);
   const [showSectionMenu, setShowSectionMenu] = React.useState(true);
 
   const session = useSession();
@@ -36,8 +38,16 @@ const EditorPage = () => {
           <Editor />
         </motion.div>
         <motion.div layout>
-          <p>Preview</p>
-          <Preview />
+          <div className="flex justify-between">
+            <p>Preview</p>
+            <button
+              className="btn btn-secondary btn-sm"
+              onClick={() => setPreviewViewAll(!previewViewAll)}
+            >
+              {previewViewAll ? "View current component" : "View full"}
+            </button>
+          </div>
+          <Preview viewAll={previewViewAll} />
         </motion.div>
       </div>
     </LayoutGroup>
