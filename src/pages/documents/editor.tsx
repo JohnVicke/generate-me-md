@@ -1,4 +1,3 @@
-import { useIsDesktop, useIsTablet } from "@/components/hooks/useMediaQueries";
 import { Editor } from "@/modules/editor/Editor";
 import { Preview } from "@/modules/editor/Preview";
 import { SectionMenu } from "@/modules/editor/SectionMenu/SectionMenu";
@@ -8,7 +7,6 @@ import React from "react";
 
 const EditorPage = () => {
   const [showSectionMenu, setShowSectionMenu] = React.useState(true);
-  const [components, setComponents] = React.useState<[]>([]);
 
   const session = useSession();
 
